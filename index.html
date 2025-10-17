@@ -1,77 +1,154 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Unico Kitchen — Recipes, Shop & Gas</title>
+
+  <!-- ===========================
+       STYLES
+       =========================== -->
   <style>
-    :root{--accent:#ff6b35;--muted:#666}
-    body{font-family:Inter, system-ui, Arial; margin:0; background:#fafafa; color:#111}
-    header{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.06);position:sticky;top:0;z-index:50}
-    .container{max-width:1100px;margin:0 auto;padding:18px}
-    nav{display:flex;gap:12px;align-items:center}
-    .brand{font-weight:700;color:var(--accent)}
-    .tabs{margin-left:20px;display:flex;gap:8px}
-    .tab{padding:8px 12px;border-radius:8px;cursor:pointer}
-    .tab.active{background:linear-gradient(90deg, #fff, #fff);box-shadow:0 1px 4px rgba(0,0,0,.05);border:1px solid #eee}
-    main{padding:24px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-    .card{background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(8,8,8,.04)}
-    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-    .btn{display:inline-block;padding:8px 10px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;cursor:pointer;border:none}
-    .secondary{background:#eee;color:#111}
-    .small{padding:6px 8px;font-size:13px}
-    .ingredients{margin-top:10px}
-    .ingredient{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed #f0f0f0}
-    .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
-    .shop-item img{height:120px;object-fit:cover;width:100%;border-radius:8px}
-    .cart-icon{margin-left:auto;display:flex;align-items:center;gap:10px}
-    .cart-count{background:var(--accent);color:#fff;padding:4px 8px;border-radius:999px;font-weight:700}
-    .cart-panel{position:fixed;right:18px;bottom:18px;background:#fff;padding:12px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);width:320px;max-height:60vh;overflow:auto}
-    .hidden{display:none}
-    footer{padding:18px;text-align:center;color:var(--muted);font-size:14px}
-    .gas-block{background:#fff;padding:18px;border-radius:12px}
-    .highlight{background:#fff7f2;padding:8px;border-radius:6px;border:1px solid #ffe6d9}
-    .notice{font-size:13px;color:var(--muted)}
-    .search{padding:8px 12px;border-radius:999px;border:1px solid #eee}
+    :root {
+      --accent: #ff6b35;
+      --muted: #666;
+      --bg: #fafafa;
+      --card: #fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #111;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Layout container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    /* Header / Nav */
+    header {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner { display:flex; align-items:center; gap:12px; }
+    .logo { width:56px; height:56px; object-fit:cover; border-radius:10px; padding:6px; background:#fff; border:1px solid rgba(0,0,0,0.04); }
+    .brand { font-weight:800; font-size:18px; color:var(--accent); }
+    .tagline { font-size:12px; color:var(--muted); margin-top:2px; }
+
+    .tabs { margin-left:20px; display:flex; gap:8px; }
+    .tab { padding:8px 12px; border-radius:8px; cursor:pointer; user-select:none; }
+    .tab.active { background:#fff; border:1px solid #eee; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+
+    .cart-icon { margin-left:auto; display:flex; align-items:center; gap:10px; }
+
+    /* Main content */
+    main { padding: 24px 0; }
+    h2 { margin-top: 0; }
+
+    /* Cards */
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; }
+    .card { background:var(--card); border-radius:12px; padding:12px; box-shadow:0 2px 8px rgba(8,8,8,.04); }
+    .card img { width:100%; height:160px; object-fit:cover; border-radius:8px; display:block; }
+
+    .btn { display:inline-block; padding:8px 10px; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; cursor:pointer; border:none; }
+    .btn.small { padding:6px 8px; font-size:13px; }
+    .btn.secondary { background:#eee; color:#111; }
+
+    .ingredient { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px dashed #f0f0f0; }
+    .ingredients { margin-top:10px; }
+
+    .shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+    .shop-item img { height:120px; object-fit:cover; width:100%; border-radius:8px; }
+
+    .cart-panel { position:fixed; right:18px; bottom:18px; background:#fff; padding:12px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.12); width:320px; max-height:60vh; overflow:auto; z-index:200; }
+    .hidden { display:none; }
+
+    footer { padding:18px; text-align:center; color:var(--muted); font-size:14px; }
+
+    .gas-block { background:#fff; padding:18px; border-radius:12px; }
+    .notice { font-size:13px; color:var(--muted); }
+
+    /* Small screens */
+    @media (max-width:720px){
+      .logo { width:44px; height:44px; }
+      .tagline { display:none; }
+      .tabs { display:none; } /* use mobile nav later if needed */
+      .grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ===========================
+       HEADER (EDIT LOGO OR TEXT HERE)
+       =========================== -->
   <header>
-    <div class="container" style="display:flex;align-items:center">
-      <div style="display:flex;align-items:center;gap:12px;width:100%">
-        <div class="brand">Unico Kitchen</div>
-        <div class="tabs" id="navTabs">
-          <div class="tab active" data-tab="home">Recipes</div>
-          <div class="tab" data-tab="shop">Shop</div>
-          <div class="tab" data-tab="gas">Gas</div>
-          <div class="tab" data-tab="fridge">Fridge</div>
+    <div class="container header-inner">
+      <!-- LEFT: LOGO + BRAND -->
+      <div style="display:flex;align-items:center;gap:12px">
+        <!-- Replace LOGO_URL below with your GitHub-hosted logo (recommended) or external image URL -->
+        <img class="logo" id="siteLogo" src="https://chatgpt.com/backend-api/estuary/content?id=file_000000000be46243bf003c9c16ca6bd8&ts=489056&p=fs&cid=1&sig=47850247fa0cf989f007af960a690ab0e8320ab43338b560e3837b4c507e6078&v=0" alt="Unico Kitchen Logo">
+        <div>
+          <div class="brand">Unico Kitchen</div>
+          <div class="tagline">You cook, we follow — real recipes, real kitchen love.</div>
         </div>
-        <div class="cart-icon">
-          <div style="cursor:pointer" id="openCart">🛒 <span id="cartCount" class="cart-count">0</span></div>
-          <a id="whatsappBtn" class="btn small" href="#">WhatsApp</a>
-        </div>
+      </div>
+
+      <!-- MIDDLE: TABS -->
+      <div class="tabs" id="navTabs" role="tablist" aria-label="Main navigation">
+        <div class="tab active" data-tab="home" role="tab">Recipes</div>
+        <div class="tab" data-tab="shop" role="tab">Shop</div>
+        <div class="tab" data-tab="gas" role="tab">Gas</div>
+        <div class="tab" data-tab="fridge" role="tab">Fridge</div>
+      </div>
+
+      <!-- RIGHT: CART + WHATSAPP -->
+      <div class="cart-icon">
+        <div style="cursor:pointer" id="openCart">🛒 <span id="cartCount" class="cart-count" style="background:var(--accent);color:#fff;padding:4px 8px;border-radius:999px;font-weight:700">0</span></div>
+        <button id="headerWhatsappBtn" class="btn small" type="button" aria-label="Send order via WhatsApp" onclick="openWhatsAppOrder()">WhatsApp</button>
       </div>
     </div>
   </header>
 
+  <!-- ===========================
+       MAIN CONTENT
+       =========================== -->
   <main class="container">
-    <section id="home" class="tab-panel">
+    <!-- HOME / RECIPES -->
+    <section id="home" class="tab-panel" role="tabpanel">
       <h2>All Recipes</h2>
-      <div class="grid" id="recipesGrid"></div>
+      <!-- SEARCH (optional) -->
+      <div style="margin-bottom:12px">
+        <input id="searchInput" class="search" placeholder="Search recipes..." style="width:100%;max-width:360px">
+      </div>
+      <div class="grid" id="recipesGrid" aria-live="polite"></div>
     </section>
 
-    <section id="shop" class="tab-panel hidden">
+    <!-- SHOP -->
+    <section id="shop" class="tab-panel hidden" role="tabpanel">
       <h2>Shop</h2>
       <div class="shop-grid" id="shopGrid"></div>
     </section>
 
-    <section id="gas" class="tab-panel hidden">
+    <!-- GAS -->
+    <section id="gas" class="tab-panel hidden" role="tabpanel">
       <h2>Gas Token Purchase</h2>
       <div class="gas-block">
-        <p class="notice">Each gas minute costs 1 token. Choose how many tokens (minutes) you want to buy and add to cart. Replace the price below to match your actual price per token.</p>
-        <div style="display:flex;gap:12px;align-items:center;margin-top:12px">
-          <label>Tokens (minutes): <input id="gasQty" type="number" min="1" value="1" style="width:80px;padding:6px;border-radius:6px;border:1px solid #eee"></label>
+        <p class="notice">Each gas minute is 1 token. Choose number of tokens and add to cart.</p>
+        <div style="display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap">
+          <label>Tokens (minutes):
+            <input id="gasQty" type="number" min="1" value="1" style="width:80px;padding:6px;border-radius:6px;border:1px solid #eee">
+          </label>
           <div>Price per token: <strong id="tokenPrice">50</strong> KES</div>
           <button class="btn" id="addGas">Add to Cart</button>
         </div>
@@ -79,19 +156,20 @@
       </div>
     </section>
 
-    <section id="fridge" class="tab-panel hidden">
+    <!-- FRIDGE -->
+    <section id="fridge" class="tab-panel hidden" role="tabpanel">
       <h2>Your Fridge (Saved Ingredients)</h2>
       <div id="fridgeList"></div>
     </section>
-
   </main>
 
-  <div id="cartPanel" class="cart-panel hidden">
+  <!-- CART PANEL -->
+  <div id="cartPanel" class="cart-panel hidden" aria-live="polite" aria-hidden="true">
     <h3>Cart</h3>
     <div id="cartItems"></div>
-    <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+    <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
       <div><strong>Total:</strong> <span id="cartTotal">0</span> KES</div>
-      <div>
+      <div style="display:flex;gap:8px">
         <button class="btn small" id="clearCart">Clear</button>
         <button class="btn small" id="composeWhatsapp">Send to WhatsApp</button>
       </div>
@@ -102,249 +180,386 @@
     Built for Unico Kitchen — replace images, phone and prices in the code. Ready for GitHub Pages.
   </footer>
 
+  <!-- ===========================
+       SCRIPTS
+       =========================== -->
   <script>
-    // ======= Data (edit these arrays to add your real recipes & shop items) =======
-    const PHONE_NUMBER = '254712345678'; // REPLACE with your WhatsApp number in international format (no +). e.g. 2547XXXXXXXX
+    /************************************************************************
+     *  CONFIGURATION - EDIT THESE VALUES
+     *
+     *  Wherever you see the comment "// --- EDIT HERE ---" update values.
+     ************************************************************************/
+
+    const CONFIG = {
+      // --- EDIT HERE: set your WhatsApp number in international format (no plus)
+      // For Kenya mobile 07xxxxxxxx => 2547xxxxxxxx
+      PHONE_NUMBER: '254798459336',
+
+      // --- EDIT HERE: set your token price for gas (KES per token / minute)
+      TOKEN_PRICE: 50,
+
+      // --- EDIT HERE: site logo (recommended to host this image in your GitHub repo)
+      // Example: "images/logo.png" if you upload the file into the repo /images folder
+      LOGO_URL: 'https://chatgpt.com/backend-api/estuary/content?id=file_000000000be46243bf003c9c16ca6bd8&ts=489056&p=fs&cid=1&sig=47850247fa0cf989f007af960a690ab0e8320ab43338b560e3837b4c507e6078&v=0'
+    };
+
+    /************************************************************************
+     *  DATA: Add / edit recipes and shop items below. Keep the structure.
+     *
+     *  - recipes: each recipe should have a unique id, title, image, ingredients[]
+     *    and steps[] arrays. Optionally include stepImages[] to show step photos.
+     *
+     *  - shopItems: each product must have id, name, price (number), image (url),
+     *    and optional url for product page.
+     *
+     *  When you add a recipe ingredient and want it to map to a shop item, set
+     *  ingredient.shopId to the matching shopItems[id].
+     *
+     *  // --- EDIT HERE: Replace example items with your actual content ---
+     ************************************************************************/
 
     const recipes = [
+      // --- SAMPLE / YOUR NEW RECIPE (Chicken Pilau) - you already provided this ---
       {
-        id: 'r1',
+        id: 'chicken-pilau',
         title: 'Chicken Pilau',
-        image: 'https://images.unsplash.com/photo-1546069901-eacef0df6022?w=1200&q=60',
+        image: 'https://img-global.cpcdn.com/recipes/cefe9d01076b938b/300x426f0.5_0.56875_1.0q80/chicken-pilau-recipe-main-photo.webp',
         ingredients: [
-          {name: 'Rice', shopId: 's1'},
-          {name: 'Chicken', shopId: 's2'},
-          {name: 'Pilau Masala', shopId: 's3'}
+          { name: '3 cups basmati rice', shopId: 's1' },
+          { name: '2 tbsn pilau masala', shopId: 's3' },
+          { name: 'Onions', shopId: 's9' },
+          { name: 'Salt', shopId: 's10' },
+          { name: 'Garlic ginger paste', shopId: 's6' },
+          { name: '6 cups hot water' },
+          { name: '2 kg chicken pieces', shopId: 's2' }
         ],
-        steps: ['Wash rice', 'Brown chicken with spices', 'Add rice and simmer for 20 minutes']
+        steps: [
+          'Fry lots of onions till black in color (this is the secret to a colorful and tasty pilau). Keep stirring to avoid burning.',
+          'Add garlic ginger paste and stir till fragrant then add the pilau masala spice and salt.',
+          'Stir in the pre-baked chicken and cook for about 5 minutes to infuse the flavors.',
+          'Add rice, water and cook on medium heat till the water evaporates.',
+          'Enjoy your delicious Chicken Pilau!'
+        ],
+        stepImages: [
+          'https://img-global.cpcdn.com/steps/45bb04b78b7b6fe2/160x128cq80/chicken-pilau-recipe-step-1-photo.webp',
+          'https://img-global.cpcdn.com/steps/57f8db4a7a187b78/160x128cq80/chicken-pilau-recipe-step-2-photo.webp',
+          'https://img-global.cpcdn.com/steps/508867d1e8318f14/160x128cq80/chicken-pilau-recipe-step-3-photo.webp',
+          'https://img-global.cpcdn.com/steps/b9e3e8a664f12628/160x128cq80/chicken-pilau-recipe-step-4-photo.webp',
+          'https://img-global.cpcdn.com/steps/241d90e7a15d06d4/160x128cq80/chicken-pilau-recipe-step-5-photo.webp'
+        ]
       },
+
+      // --- EXAMPLE: add more recipes below following same structure ---
+      /*
       {
-        id: 'r2',
+        id: 'veg-stir-fry',
         title: 'Vegetable Stir Fry',
-        image: 'https://images.unsplash.com/photo-1546069901-eacef0df6022?w=1200&q=60',
+        image: 'https://example.com/veg-stir.jpg',
         ingredients: [
-          {name: 'Mixed Veg', shopId: 's4'},
+          {name: 'Mixed Vegetables', shopId: 's4'},
           {name: 'Soy Sauce', shopId: 's5'},
           {name: 'Garlic', shopId: 's6'}
         ],
         steps: ['Chop vegetables', 'Stir fry with garlic', 'Add soy and serve']
       },
-      {
-        id: 'r3',
-        title: 'Githeri (Maize + Beans)',
-        image: 'https://images.unsplash.com/photo-1546069901-eacef0df6022?w=1200&q=60',
-        ingredients: [
-          {name: 'Maize', shopId: 's7'},
-          {name: 'Beans', shopId: 's8'}
-        ],
-        steps: ['Soak beans', 'Boil maize and beans together', 'Season and serve']
-      }
+      */
     ];
 
+    // --- SHOP: map shop items (products). Edit these to match your shop catalog.
     const shopItems = [
-      {id: 's1', name: 'Rice 2kg', price: 200, image: 'https://images.unsplash.com/photo-1604908177522-7c2c9fa0d6c3?w=800&q=60', url: ''},
-      {id: 's2', name: 'Chicken 1kg', price: 450, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=60', url: ''},
-      {id: 's3', name: 'Pilau Masala 100g', price: 60, image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?w=800&q=60', url: ''},
-      {id: 's4', name: 'Mixed Vegetables 500g', price: 120, image: 'https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=60', url: ''},
-      {id: 's5', name: 'Soy Sauce 200ml', price: 150, image: 'https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?w=800&q=60', url: ''},
-      {id: 's6', name: 'Garlic 100g', price: 30, image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?w=800&q=60', url: ''},
-      {id: 's7', name: 'Maize 1kg', price: 90, image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=800&q=60', url: ''},
-      {id: 's8', name: 'Beans 1kg', price: 120, image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=800&q=60', url: ''}
+      { id: 's1', name: 'Rice 2kg', price: 200, image: 'https://images.unsplash.com/photo-1604908177522-7c2c9fa0d6c3?w=800&q=60', url: '' },
+      { id: 's2', name: 'Chicken 1kg', price: 450, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=60', url: '' },
+      { id: 's3', name: 'Pilau Masala 100g', price: 60, image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?w=800&q=60', url: '' },
+      { id: 's4', name: 'Mixed Vegetables 500g', price: 120, image: 'https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=60', url: '' },
+      { id: 's5', name: 'Soy Sauce 200ml', price: 150, image: 'https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?w=800&q=60', url: '' },
+      { id: 's6', name: 'Garlic paste 200g', price: 80, image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?w=800&q=60', url: '' },
+      { id: 's7', name: 'Maize 1kg', price: 90, image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=800&q=60', url: '' },
+      { id: 's8', name: 'Beans 1kg', price: 120, image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=800&q=60', url: '' },
+
+      // extras used in Chicken Pilau mapping:
+      { id: 's9', name: 'Onions 1kg', price: 60, image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=60', url: '' },
+      { id: 's10', name: 'Salt 1kg', price: 30, image: 'https://images.unsplash.com/photo-1585238342028-7c6a3c6e0a0f?w=800&q=60', url: '' }
     ];
 
-    // ======= App state (localStorage-backed) =======
+    /************************************************************************
+     *  APPLICATION STATE (localStorage backed)
+     ************************************************************************/
     const state = {
-      cart: JSON.parse(localStorage.getItem('cart')||'[]'),
-      fridge: JSON.parse(localStorage.getItem('fridge')||'[]'),
-      tokenPrice: Number(localStorage.getItem('tokenPrice')||50)
+      cart: JSON.parse(localStorage.getItem('uk_cart') || '[]'),
+      fridge: JSON.parse(localStorage.getItem('uk_fridge') || '[]'),
+      tokenPrice: Number(localStorage.getItem('uk_tokenPrice') || CONFIG.TOKEN_PRICE)
     };
 
-    // ======= Helpers =======
-    function save() {
-      localStorage.setItem('cart', JSON.stringify(state.cart));
-      localStorage.setItem('fridge', JSON.stringify(state.fridge));
-      localStorage.setItem('tokenPrice', state.tokenPrice);
+    /************************************************************************
+     *  HELPERS
+     ************************************************************************/
+    function saveState() {
+      localStorage.setItem('uk_cart', JSON.stringify(state.cart));
+      localStorage.setItem('uk_fridge', JSON.stringify(state.fridge));
+      localStorage.setItem('uk_tokenPrice', state.tokenPrice);
       renderCartCount();
     }
 
-    function findShopById(id){return shopItems.find(s=>s.id===id)}
+    function findShopById(id) { return shopItems.find(s => s.id === id); }
 
-    function addToCart(item){
-      // item: {id,name,price,qty}
-      const existing = state.cart.find(c=>c.id===item.id);
-      if(existing) existing.qty += item.qty||1;
-      else state.cart.push({...item,qty:item.qty||1});
-      save();
+    function addToCart(item) {
+      // item: {id, name, price, qty}
+      const existing = state.cart.find(c => c.id === item.id);
+      if (existing) existing.qty += item.qty || 1;
+      else state.cart.push({ ...item, qty: item.qty || 1 });
+      saveState();
       alert('Added to cart');
     }
 
-    function addRecipeToCart(recipe){
-      recipe.ingredients.forEach(ing=>{
-        const shop = findShopById(ing.shopId);
-        if(shop) addToCart({id:shop.id,name:shop.name,price:shop.price,qty:1});
+    function addRecipeToCart(recipe) {
+      recipe.ingredients.forEach(ing => {
+        if (ing.shopId) {
+          const shop = findShopById(ing.shopId);
+          if (shop) addToCart({ id: shop.id, name: shop.name, price: shop.price, qty: 1 });
+        }
       });
     }
 
-    // ======= Render functions =======
-    function renderRecipes(){
-      const el = document.getElementById('recipesGrid'); el.innerHTML='';
-      recipes.forEach(r=>{
-        const card = document.createElement('div'); card.className='card';
+    /************************************************************************
+     *  RENDERING FUNCTIONS
+     ************************************************************************/
+    function renderRecipes(filter = '') {
+      const el = document.getElementById('recipesGrid'); el.innerHTML = '';
+      const q = filter.trim().toLowerCase();
+      recipes.forEach(r => {
+        if (q && !r.title.toLowerCase().includes(q)) return;
+        const card = document.createElement('div'); card.className = 'card';
         card.innerHTML = `
-          <img src="${r.image}" alt="${r.title}">
-          <h3>${r.title}</h3>
+          <img src="${r.image}" alt="${escapeHtml(r.title)}">
+          <h3>${escapeHtml(r.title)}</h3>
           <div style="display:flex;gap:8px;margin-top:8px">
-            <button class="btn small" data-id="${r.id}" onclick="toggleDetails('${r.id}')">View ingredients & steps</button>
+            <button class="btn small" onclick="toggleDetails('${r.id}')">View ingredients & steps</button>
             <button class="btn small secondary" onclick="addRecipeToCartHandler('${r.id}')">Add recipe to cart</button>
           </div>
           <div id="details-${r.id}" class="ingredients hidden"></div>
         `;
         el.appendChild(card);
-      })
+      });
     }
 
-    function renderDetails(id){
-      const r = recipes.find(x=>x.id===id);
-      const container = document.getElementById('details-'+id);
-      container.innerHTML='';
+    function renderDetails(id) {
+      const r = recipes.find(x => x.id === id);
+      if (!r) return;
+      const container = document.getElementById('details-' + id);
+      container.innerHTML = '';
+      // Ingredients list
       const ingWrap = document.createElement('div');
-      r.ingredients.forEach(ing=>{
-        const row = document.createElement('div'); row.className='ingredient';
-        const left = document.createElement('div'); left.innerText=ing.name;
+      r.ingredients.forEach(ing => {
+        const row = document.createElement('div'); row.className = 'ingredient';
+        const left = document.createElement('div'); left.innerText = ing.name;
         const right = document.createElement('div');
-        const btn = document.createElement('button'); btn.className='btn small secondary'; btn.innerText='Add to Fridge';
-        btn.onclick = ()=>addToFridge(ing.name, ing.shopId);
+        const btn = document.createElement('button'); btn.className = 'btn small secondary'; btn.innerText = 'Add to Fridge';
+        btn.onclick = () => addToFridge(ing.name, ing.shopId);
         right.appendChild(btn);
         row.appendChild(left); row.appendChild(right);
         ingWrap.appendChild(row);
       });
-      const stepsEl = document.createElement('div'); stepsEl.style.marginTop='8px';
+      container.appendChild(ingWrap);
+
+      // Steps
+      const stepsEl = document.createElement('div'); stepsEl.style.marginTop = '8px';
       stepsEl.innerHTML = '<strong>Steps:</strong>';
-      const ol = document.createElement('ol'); r.steps.forEach(s=>{const li=document.createElement('li');li.innerText=s;ol.appendChild(li)});
-      container.appendChild(ingWrap); container.appendChild(stepsEl); container.appendChild(ol);
+      const ol = document.createElement('ol');
+      r.steps.forEach((s, idx) => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '6px';
+        li.innerHTML = `${escapeHtml(s)}`;
+        // optionally show step image if exists
+        if (r.stepImages && r.stepImages[idx]) {
+          const im = document.createElement('img');
+          im.src = r.stepImages[idx];
+          im.style.width = '100%';
+          im.style.maxWidth = '320px';
+          im.style.marginTop = '6px';
+          im.style.borderRadius = '6px';
+          li.appendChild(im);
+        }
+        ol.appendChild(li);
+      });
+      container.appendChild(stepsEl); container.appendChild(ol);
     }
 
-    function renderShop(){
-      const el = document.getElementById('shopGrid'); el.innerHTML='';
-      shopItems.forEach(s=>{
-        const card = document.createElement('div'); card.className='card shop-item';
-        card.id = 'shop-'+s.id;
+    function renderShop() {
+      const el = document.getElementById('shopGrid'); el.innerHTML = '';
+      shopItems.forEach(s => {
+        const card = document.createElement('div'); card.className = 'card shop-item';
+        card.id = 'shop-' + s.id;
         card.innerHTML = `
-          <img src="${s.image}" alt="${s.name}">
-          <h4>${s.name}</h4>
+          <img src="${s.image}" alt="${escapeHtml(s.name)}">
+          <h4>${escapeHtml(s.name)}</h4>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div><strong>${s.price}</strong> KES</div>
             <div style="display:flex;gap:8px"><button class="btn small" onclick="addToCartHandler('${s.id}')">Add to cart</button></div>
           </div>
         `;
         el.appendChild(card);
-      })
+      });
     }
 
-    function renderFridge(){
-      const el = document.getElementById('fridgeList'); el.innerHTML='';
-      if(state.fridge.length===0) el.innerHTML='<div class="notice">Your fridge is empty — add ingredients from recipes.</div>';
-      state.fridge.forEach((f,idx)=>{
-        const div = document.createElement('div'); div.className='card';
-        const shop = findShopById(f.shopId);
-        div.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div><strong>${f.name}</strong></div><div style="margin-left:auto"><button class="btn small" onclick="goToShopItem('${f.shopId}')">View in shop</button></div></div>`;
+    function renderFridge() {
+      const el = document.getElementById('fridgeList'); el.innerHTML = '';
+      if (state.fridge.length === 0) {
+        el.innerHTML = '<div class="notice">Your fridge is empty — add ingredients from recipes.</div>';
+        return;
+      }
+      state.fridge.forEach(f => {
+        const div = document.createElement('div'); div.className = 'card';
+        div.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div><strong>${escapeHtml(f.name)}</strong></div><div style="margin-left:auto"><button class="btn small" onclick="goToShopItem('${f.shopId}')">View in shop</button></div></div>`;
         el.appendChild(div);
-      })
+      });
     }
 
-    function renderCartPanel(){
-      const el = document.getElementById('cartItems'); el.innerHTML='';
+    function renderCartPanel() {
+      const el = document.getElementById('cartItems'); el.innerHTML = '';
       let total = 0;
-      state.cart.forEach((c,idx)=>{
-        const div = document.createElement('div'); div.style.display='flex'; div.style.justifyContent='space-between'; div.style.alignItems='center'; div.style.padding='6px 0';
-        div.innerHTML = `<div>${c.name} x ${c.qty}</div><div>${c.price*c.qty} KES <button class='btn small secondary' onclick="removeCartItem(${idx})">-</button></div>`;
+      state.cart.forEach((c, idx) => {
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.justifyContent = 'space-between';
+        div.style.alignItems = 'center';
+        div.style.padding = '6px 0';
+        div.innerHTML = `<div>${escapeHtml(c.name)} x ${c.qty}</div><div>${c.price * c.qty} KES <button class='btn small secondary' onclick="removeCartItem(${idx})">-</button></div>`;
         el.appendChild(div);
-        total += c.price*c.qty;
+        total += c.price * c.qty;
       });
       document.getElementById('cartTotal').innerText = total;
     }
 
-    function renderCartCount(){
-      const c = state.cart.reduce((s,i)=>s+i.qty,0);
+    function renderCartCount() {
+      const c = state.cart.reduce((s, i) => s + i.qty, 0);
       document.getElementById('cartCount').innerText = c;
     }
 
-    // ======= Actions =======
-    function toggleDetails(id){
-      const el = document.getElementById('details-'+id);
-      if(el.classList.contains('hidden')){ renderDetails(id); el.classList.remove('hidden'); } else el.classList.add('hidden');
+    /************************************************************************
+     *  ACTIONS
+     ************************************************************************/
+    function toggleDetails(id) {
+      const el = document.getElementById('details-' + id);
+      if (el.classList.contains('hidden')) { renderDetails(id); el.classList.remove('hidden'); } else el.classList.add('hidden');
     }
-    function addRecipeToCartHandler(id){ const r = recipes.find(x=>x.id===id); addRecipeToCart(r); renderCartPanel(); }
-    function addToCartHandler(shopId){ const s = findShopById(shopId); addToCart({id:s.id,name:s.name,price:s.price,qty:1}); renderCartPanel(); }
-    function addToFridge(name, shopId){
+
+    function addRecipeToCartHandler(id) { const r = recipes.find(x => x.id === id); if (r) addRecipeToCart(r); renderCartPanel(); renderCartCount(); }
+
+    function addToCartHandler(shopId) { const s = findShopById(shopId); if (s) { addToCart({ id: s.id, name: s.name, price: s.price, qty: 1 }); renderCartPanel(); } }
+
+    function addToFridge(name, shopId) {
       // add to fridge state and immediately go to shop tab and scroll to item
-      const existing = state.fridge.find(f=>f.name===name);
-      if(!existing) state.fridge.push({name,shopId});
-      save();
-      // switch to shop
+      const existing = state.fridge.find(f => f.name === name && f.shopId === shopId);
+      if (!existing) state.fridge.push({ name, shopId });
+      saveState();
+      // switch to shop and highlight item
       switchTab('shop');
-      setTimeout(()=>{
-        const target = document.getElementById('shop-'+shopId);
-        if(target){ target.scrollIntoView({behavior:'smooth',block:'center'}); target.style.boxShadow='0 4px 18px rgba(255,107,53,.14)'; setTimeout(()=>target.style.boxShadow='none',1200); }
-      },300);
+      setTimeout(() => {
+        const target = document.getElementById('shop-' + shopId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.style.boxShadow = '0 4px 18px rgba(255,107,53,.14)';
+          setTimeout(() => target.style.boxShadow = '', 1200);
+        }
+      }, 300);
       renderFridge();
     }
 
-    function goToShopItem(shopId){ switchTab('shop'); setTimeout(()=>{document.getElementById('shop-'+shopId).scrollIntoView({behavior:'smooth',block:'center'})},200); }
+    function goToShopItem(shopId) { switchTab('shop'); setTimeout(() => { const el = document.getElementById('shop-' + shopId); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200); }
 
-    function removeCartItem(index){ state.cart.splice(index,1); save(); renderCartPanel(); }
-    function clearCart(){ if(confirm('Clear cart?')){ state.cart=[]; save(); renderCartPanel(); } }
+    function removeCartItem(index) { state.cart.splice(index, 1); saveState(); renderCartPanel(); renderCartCount(); }
 
-    // Gas logic
-    const gasQtyEl = document.getElementById('gasQty'); const tokenPriceEl = document.getElementById('tokenPrice'); const gasTotalEl = document.getElementById('gasTotal');
+    function clearCart() { if (confirm('Clear cart?')) { state.cart = []; saveState(); renderCartPanel(); renderCartCount(); } }
+
+    /************************************************************************
+     * GAS LOGIC
+     ************************************************************************/
+    const gasQtyEl = document.getElementById('gasQty');
+    const tokenPriceEl = document.getElementById('tokenPrice');
+    const gasTotalEl = document.getElementById('gasTotal');
+
     tokenPriceEl.innerText = state.tokenPrice;
-    function updateGasTotal(){ const qty = Number(gasQtyEl.value||1); gasTotalEl.innerText = qty*state.tokenPrice; }
+    function updateGasTotal() { const qty = Number(gasQtyEl.value || 1); gasTotalEl.innerText = qty * state.tokenPrice; }
     gasQtyEl.addEventListener('input', updateGasTotal);
-    document.getElementById('addGas').addEventListener('click', ()=>{
-      const qty = Number(gasQtyEl.value||1);
-      addToCart({id:'gas-token',name:`Gas token x${qty}`,price:state.tokenPrice,qty:qty});
-      renderCartPanel();
+    document.getElementById('addGas').addEventListener('click', () => {
+      const qty = Number(gasQtyEl.value || 1);
+      addToCart({ id: 'gas-token', name: `Gas token x${qty}`, price: state.tokenPrice, qty: qty });
+      renderCartPanel(); renderCartCount();
     });
 
-    // Compose WhatsApp message
-    function composeMessage(){
+    /************************************************************************
+     * WHATSAPP MESSAGE COMPOSITION & SENDING
+     ************************************************************************/
+    function composeMessage() {
       let lines = ['Unico Kitchen Order:'];
-      if(state.cart.length===0) lines.push('(Cart is empty)');
-      state.cart.forEach(c=>{ lines.push(`- ${c.name} x ${c.qty} = ${c.price*c.qty} KES`); });
-      const total = state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+      if (state.cart.length === 0) lines.push('(Cart is empty)');
+      state.cart.forEach(c => { lines.push(`- ${c.name} x ${c.qty} = ${c.price * c.qty} KES`); });
+      const total = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
       lines.push(`Total: ${total} KES`);
-      if(state.fridge.length>0){ lines.push('Saved fridge items:'); state.fridge.forEach(f=>lines.push(`- ${f.name}`)); }
+      if (state.fridge.length > 0) { lines.push('Saved fridge items:'); state.fridge.forEach(f => lines.push(`- ${f.name}`)); }
       return lines.join('\n');
     }
 
-    document.getElementById('composeWhatsapp').addEventListener('click', ()=>{
+    // Send to WhatsApp via wa.me
+    function openWhatsAppOrder() {
       const msg = composeMessage();
-      const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
-      window.open(url,'_blank');
-    });
-
-    document.getElementById('openCart').addEventListener('click', ()=>{
-      const panel = document.getElementById('cartPanel'); panel.classList.toggle('hidden'); renderCartPanel();
-    });
-    document.getElementById('clearCart').addEventListener('click', clearCart);
-
-    // nav
-    document.getElementById('navTabs').addEventListener('click', (e)=>{ if(e.target.dataset.tab) switchTab(e.target.dataset.tab); });
-    function switchTab(name){
-      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('hidden', p.id!==name));
-      // render specific
-      if(name==='shop') renderShop();
-      if(name==='home') renderRecipes();
-      if(name==='fridge') renderFridge();
-      if(name==='gas') updateGasTotal();
+      const url = `https://wa.me/${CONFIG.PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
     }
 
-    // initial render
-    renderRecipes(); renderShop(); renderCartCount(); renderFridge(); renderCartPanel();
+    document.getElementById('composeWhatsapp').addEventListener('click', openWhatsAppOrder);
 
-    // expose some functions to inline handlers (simple approach for single file)
-    window.toggleDetails = toggleDetails; window.addRecipeToCartHandler = addRecipeToCartHandler; window.addToCartHandler = addToCartHandler; window.addToFridge = addToFridge; window.goToShopItem = goToShopItem; window.addToCart = addToCart; window.composeMessage = composeMessage; window.findShopById = findShopById; window.removeCartItem = removeCartItem;
+    /************************************************************************
+     * NAV & INITIALIZATION
+     ************************************************************************/
+    document.getElementById('openCart').addEventListener('click', () => {
+      const panel = document.getElementById('cartPanel'); panel.classList.toggle('hidden');
+      panel.classList.contains('hidden') ? panel.setAttribute('aria-hidden', 'true') : panel.setAttribute('aria-hidden', 'false');
+      renderCartPanel();
+    });
+
+    document.getElementById('clearCart').addEventListener('click', clearCart);
+
+    document.getElementById('navTabs').addEventListener('click', (e) => { if (e.target.dataset.tab) switchTab(e.target.dataset.tab); });
+
+    function switchTab(name) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== name));
+      if (name === 'shop') renderShop();
+      if (name === 'home') renderRecipes();
+      if (name === 'fridge') renderFridge();
+      if (name === 'gas') updateGasTotal();
+    }
+
+    // Search filter
+    document.getElementById('searchInput').addEventListener('input', (e) => { renderRecipes(e.target.value); });
+
+    // Escape helper for safety (very small)
+    function escapeHtml(text) { return String(text).replace(/[&<>"']/g, function (m) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]; }); }
+
+    // Initial render
+    (function init() {
+      // Apply logo from CONFIG (easy customization)
+      const logoEl = document.getElementById('siteLogo');
+      if (CONFIG.LOGO_URL) logoEl.src = CONFIG.LOGO_URL;
+
+      renderRecipes();
+      renderShop();
+      renderCartCount();
+      renderFridge();
+      renderCartPanel();
+    })();
+
+    // Expose some functions for inline onclick handlers (keeps single-file simple)
+    window.toggleDetails = toggleDetails;
+    window.addRecipeToCartHandler = addRecipeToCartHandler;
+    window.addToCartHandler = addToCartHandler;
+    window.addToFridge = addToFridge;
+    window.goToShopItem = goToShopItem;
+    window.addToCart = addToCart;
+    window.composeMessage = composeMessage;
+    window.findShopById = findShopById;
+    window.removeCartItem = removeCartItem;
 
   </script>
 </body>
